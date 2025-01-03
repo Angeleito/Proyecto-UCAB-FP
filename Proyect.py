@@ -1,4 +1,8 @@
 def main():
+  def Validar(a,b):
+    if (a >= b)and(a <= b):
+      bool = False 
+
   c = 0
   print("Bienvenido al programa para calcular su pago minimo de deuda, ingrese (A): Para calcular su deuda, ingrese (S): para salir del programa:")
   ini = input()
