@@ -25,7 +25,7 @@ def CargarOIngresarDatos():
   clientes = []
 
   if opcion == 1:
-    print("Ingrese nombre del archivo con su extension (ej: Clitarsal.txt):")
+    print("Ingrese nombre del archivo con su extension (ej: Clitarsal.txt y los datos a ingresar del archivo de texto deben estar uno abajo del otro):")
     nma = input()
     archivo = open(nma, 'r')
     lineas = archivo.readlines()
@@ -47,7 +47,7 @@ def CargarOIngresarDatos():
         print("Datos guardados")
         GuardarArchivoSalida(iniciales, deuda)
       else:
-        print("Datos inválidos para el cliente en las líneas")
+        print("Datos inválidos en el archivo.")
   else:
     IngresarDatos()
 
@@ -79,7 +79,7 @@ def GuardarDatos(Iniciales, Clave, Deuda):
   GuardarArchivoSalida(Iniciales, Deuda)
 
 def GuardarArchivoSalida(Iniciales, Deuda):
-  PagoMin = PagoMinimo(float(Deuda))
+  PagoMin = PagoMinimo(int(Deuda))
   arch = open("C:Cliente.txt", "at")
   arch.write("Iniciales: " + str(Iniciales) + "\n")
   arch.write("Pago Mínimo: " + str(PagoMin) + "\n")
