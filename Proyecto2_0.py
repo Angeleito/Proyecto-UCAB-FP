@@ -4,33 +4,50 @@ def Validar(a, b, f):
   else:
     return False
 
+def validar_datos_cliente(iniciales, clave, deuda):
+  if len(iniciales) != 4:
+    return False
+  if len(clave) != 4 or not clave.isdigit():
+    return False
+  if not (4 <= len(deuda) <= 5) or not deuda.isdigit():
+    return False
+  return True
+
 def PagoMinimo(a):
   MI = ((a * 30) / 100)
   DI = (a + MI)
   PM = (DI / 12)
   return PM
 
-def CargarOIngresarDatos(nombre_archivo):
-  print("¿Desea cargar los datos desde un archivo? (S/N): ")
-  opcion = input().upper()
-  if opcion == 'S':
-    archivo = open(nombre_archivo, 'r')
+def CargarOIngresarDatos():
+  print("¿Desea cargar los datos desde un archivo? entonces presione 1, o si desea hacerlo manual presione 0: ")
+  opcion = int(input())
+  clientes = []
+
+  if opcion == 1:
+    print("Ingrese nombre del archivo con su extension (ej: Clitarsal.txt):")
+    nma = input()
+    archivo = open(nma, 'r')
     lineas = archivo.readlines()
     archivo.close()
-    
+
     if len(lineas) % 3 != 0:
       print("El archivo tiene un número incorrecto de líneas.")
       return
 
     for i in range(0, len(lineas), 3):
       iniciales = lineas[i].strip()
-      clave = lineas[i+1].strip()
-      deuda = lineas[i+2].strip()
+      clave = lineas[i + 1].strip()
+      deuda = lineas[i + 2].strip()
       if validar_datos_cliente(iniciales, clave, deuda):
         clientes.append((iniciales, clave, deuda))
+        arch2 = open("C:clientes.txt", "at")
+        arch2.write("Iniciales: " + iniciales + ", Clave: " + clave + ", Deuda: " + deuda + "\n")
+        arch2.close()
+        print("Datos guardados")
+        GuardarArchivoSalida(iniciales, deuda)
       else:
-        print(f"Datos inválidos para el cliente en las líneas {i+1}-{i+3}.")
-
+        print("Datos inválidos para el cliente en las líneas")
   else:
     IngresarDatos()
 
@@ -62,11 +79,12 @@ def GuardarDatos(Iniciales, Clave, Deuda):
   GuardarArchivoSalida(Iniciales, Deuda)
 
 def GuardarArchivoSalida(Iniciales, Deuda):
-  arch = open("C:Clitarsal.txt", "at")
-  arch.write("Iniciales: " + Iniciales + "\n")
-  arch.write("Pago Mínimo: " + str(PagoMinimo(Deuda)) + "\n")
+  PagoMin = PagoMinimo(float(Deuda))
+  arch = open("C:Cliente.txt", "at")
+  arch.write("Iniciales: " + str(Iniciales) + "\n")
+  arch.write("Pago Mínimo: " + str(PagoMin) + "\n")
   arch.close()
-  print("Datos guardados en 'Clientes.txt'.")
+  print("Datos guardados en 'Cliente.txt'.")
 
 def MostrarDatos():
   arch = open("clientes.txt", "rt")
@@ -80,11 +98,10 @@ def MostrarPagoMinimo(Deuda):
   print(PagoMinimo(Deuda))
 
 def menu():
-  print("UCAB")
+  print("UCAB, Elabora por Angel Araujo, Gabriel Camejo, Veronica Betancourt, Dylan Hernandez y Ariagna Guerra")
   print("Bienvenido a tu calculador de deuda, para ingresar presione: 1 = SI, 0 = No")
   a = int(input())
   if a == 1:
-    print("Ejecutando programa")
     while True:
       print("\nMenu")
       print("1. Cargar o ingresar datos")
@@ -96,7 +113,7 @@ def menu():
       print("Seleccione una opción: ")
       opcion = input()
       if opcion == '1':
-        CargarOIngresarDatos("clientes.txt")
+        CargarOIngresarDatos()
       elif opcion == '2':
         MostrarDatos()
       elif opcion == '3':
